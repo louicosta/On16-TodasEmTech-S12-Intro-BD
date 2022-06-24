@@ -1,25 +1,59 @@
-# On16-TodasEmTech-S12-Intro-BD
+<h1 align="center">
+    <br>
+    <p align="center">Repositório S12 - API Games utilizando CRUD e MongoDB 🚀 <p>
+</h1>
+<p align="center">
+<img src= "image\code.gif" width="30%" height="30%"/>
+</p>
+<p align="center">
+ 
+</p>
 
-Olá, sejam bem-vindas a aula de banco de dados e integração! Meu nome é Tereza Oliveira (@Tereza25), e irei acompanhar vocês nessa semana.
+### Repositório de Banco de Dados + API - Semana 12:
 
-### Vamos preparar o ambiente!
+O repositório da Semana 12 é uma API REST com Banco de dados criada para o curso da {Reprograma}
+
+A interface é um CRUD, onde é possível listar os games no banco de dados; listar games através do ID; cadastrar novos games; atualizar um game específico; alterar games favoritados; deletar games específicos.
+
+Ps: A 📁projeto-API-DB foi criada em conjunto com a professora Tereza Oiveira durante a aula da semana-12, portanto todas as informações sobre o mesmo se encontra dentro da pasta específica.
+
+**E Como funciona?** 💬
+
+1. Clone o projeto através do comando:
+`$git clone https://github.com/louicosta/On16-TodasEmTech-S11-API-Revisao`
+
+2. Inicialize o package.json com todas as configurações do projeto através dos comandos: </p>
+`$npm init` </p>
+`$npm i express`
+`$npm i mongoose`
+
+4. Inicialize com o comando `npm run start` para que você possa executar os testes localmente.
 
 
-Para executar este projeto, você deverá ter instalado o Node.js e as dependências do npm. Além disso, iremos fazer requisições na API com a plataforma Postman.
+### Recursos e tecnologias utilizadas para a construção da API:
 
-Seguiremos a ordem de instalações no terminal:
+* **Node.Js** - versão 14.17.0;
+* Dependências Node.Js:
+   * **Express** - versão 4.18.1;
+   * **Nodemon** - versão 2.0.16;
+* Biblioteca Mongoose:
+   * **Mongoose** - versão 6.3.8;
+* **Git**;
+* **Visual Studio Code**;
+* **Postman**;
 
-- `$ npm init`
-- `$ npm install express --save`
-- `$ npm install nodemon --save`
 
+### Testando as rotas na sua máquina:
 
-Este projeto já está com os métodos HTTP organizados. Você pode testar as rotas Get, Post, Update e Delete através da ferramenta Postman. 
+Este projeto já está com os métodos HTTP organizados. Você pode testar as rotas Get, Post, Update e Delete através da ferramenta Postman.
 
-O próximo passo agora é refatorar o código do nosso projeto e criar o processo de integração com o banco de dados MongoDB através da biblioteca `mongoose`. 
+1. Abra o aplicativo [POSTMAN](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop/related?hl=pt-BR);
 
+2. Teste as rotas usando esta rota raiz na URL do Postman: localhost:3000/games/
 
--------------------------------
+3. As rotas/endpoints estão disponiveis na pasta 📁- routes 
+
+4. Para utilizar as rotas de *POST, PUT e PATCH* deve-se usar no Postman os verbos de acordo e, clicar em *body* e posteriormente em *raw*, trocar de *text* para *JSON* e apertar *Send*.
 
 ### Cadastrando MongoDB Atlas
 
@@ -30,191 +64,56 @@ Após seguir o passo a passo de configuração de cluster e projeto, será neces
 Após a criação do database, você já pode clicar em `connect`, como vamos usar nossa própria aplicação, clique em “Connect your aplication”. Será gerada um endereço de localhost, copie e esse endereço pois em breve iremos utilizá-lo. 
 
 
--------------------------------
+### Estrututura de Arquivos da API:
 
-### Iniciando com Mongoose
-
-Para conseguirmos conectar o MongoDB no nosso projeto, iremos utilizar a biblioteca [mongoose](https://www.npmjs.com/package/mongoose) , na documentação oficial você tem acesso a sintaxe de configuração, mas fica tranquila e se liga no passo a passo a seguir.
-
-Vamos instalar a Instalar a lib `mongoose` via npm install: 
-
-```js
-$ npm install mongoose
-``` 
-
-Vamos criar uma pasta chamada `config` e dentro dela, o arquivo `dbConnect.js’.
-Dentro do arquivo, iremos importar o mongoose através do require:
-
-```js
-const mongoose = require (“mongoose”)
+```
+├─📁games
+│  ├─📁src
+│    ├──📁config
+|    |  ├── dbConnect.js
+│    ├──📁controller
+|    |  ├── gamesController.js
+│    ├──📁models
+|    |  ├── games.js
+│    ├──📁routes 
+│    |  ├── gamesRoutes.js
+│    |  ├── index.js
+|    ├── app.js
+├─── .gitignore
+├─── package-lock.json
+├─── package.json
+├─── server.js
 ```
 
-Vamos construir nossa sintaxe de conexão. Lembra do string de conexão do MongoDB Atlas? Chegou a hora de usá-la. 
 
-```js 
-mongoose.connect( “COLE-AQUI-STRING-DE-CONEXÃO”)
-```
+</br>
 
-**ATENÇÃO! Não esqueça de alterar o campo password para incluir a senha do database que você criou e incluir o nome do database no final da string de conexão..**
+### Manipulação das Rotas de Games:
 
-Ainda no arquivo `dbConnect.js`, vamos declarar uma variável let chamada `db` e atribuir o valor `mongoose.connect`, finalizamos com a exportação da variável recém declarada.
+| Método HTTP | Endpoint                     | Descrição                                     |
+| ----------- | ---------------------------- | --------------------------------------------- |
+| ROTA RAIZ   | `/games`                     | Utilizada antes de todo endpoint              |
+| GET         | `/`                          | Retorna todos os games                        |
+| GET         | `/:id`                       | Retorna um game por id                        |
+| POST        | `/add`                       | Cadastra um novo game                         |
+| PUT         | `/change/:id`                | Altera um game por id                         |
+| PATCH       | `/update/:id`                | Altera a tag liked de um game                 |
+| DELETE      | `/delete/:id`                | Remove um game específico                     |
 
-
-```js
-let db = mongoose.connection;
-
-module.exports = db;
-```
-
-Vamos para o arquivo `app.js`. Nossa conexão será importada neste arquivo, ficará da seguinte forma:
-
-```js
-const db = require (“./config/dbConnect.js”);
-```
-
-Vamos iniciar a sintaxe de conexão:
-
-```js
-db.on("error", console.log.bind(console, 'Erro de conexão'))
-db.once("open", () => {
-  console.log('Conexão com o banco feita com sucesso')
-});
-```
-
-Agora podemos chamar nosso projeto no terminal, seguindo o script que criamos `npm run start`. O resultado esperado será a mensagem de sucesso para conexão com o banco de dados. 
+</br>
 
 
-----------------------------------------------------------------------
+</br>
+</br>
 
-### Criando Schema
+<span align="center">
 
+#  Muito obrigada a você que chegou até aqui! 💜 </h2> 
 
-O MongoDB trabalha com uma estrutura de dados chamada de Schema, um objeto JSON que define a estrutura e o conteúdo de seus dados. 
+</span>
 
-Iremos alterar a extensão do nosso arquivo `livros.json` para  `livros.js`, dentro do arquivo, iremos modificar toda sintaxe para modelo de schema.
-
-Na primeira linha de comando, vamos importar o mongoose:
-
-```js
-const mongoose = require (“mongoose”);
-```
-
-Após a importação, vamos declarar uma constante chamada livroSchema, nela iremos atribuir nossa Schema.
-
-
-```js
-const livroSchema = new mongoose.Schema(
-  {
-    id: {type: String},
-    titulo: {type: String, required: true},
-    autor: {type: String, required: true},
-    editora: {type: String, required: true},
-    numeroPaginas: {type: Number}
-  }
-);
-```
-
-Para finalizar o Schema, vamos declarar uma variável chamada livros e atribuir a o valor `mongoose.model('livros', livroSchema)`, duas linhas seguintes fazemos a exportação da variável criada, ficará assim:
-
-```js
-const livros = mongoose.model('livros', livroSchema);
-
-module.exports = livros;
-```
-
---------------------------------------------------------------------
-
-### Refatorando CRUD 
-
-Após as alterações da estrutura de dados de JSON para Schema, precisamos refatorar os códigos de cada rota do nosso projeto, poderemos ter acesso ao banco de dados pelo mongoDB Atlas e também pelo postman. 
-
-- *Método Read*: Vamos refatorar a rota Get e usaremos o comando `find` usado para filtrar dados no banco de dados MongoDB.  
-
-```js
-const getAllLivros = (req, res) => {
-  livros.find((err, livros) => {
-    res.status(200).json(livros)
-  })
-}
-
-const getLivros = (req, res) => {
-  const id = req.params.id;
-
-  livros.findById(id, (err, livros) => {
-    if(err) {
-      res.status(400).send({message: `${err.message} - Id do livro não localizado.`})
-    } else {
-      res.status(200).send(livros);
-    }
-  })
-}
-```
-
-- *Método Create*: Vamos refatorar a rota Post e usaremos a palavra reservada `new` para construir um novo objeto no banco de dados. Será construido um bloco if/else para retornar mensagem de erro e efetuar a inserção de um novo documento no banco de dados MongoDB.  
-
-```js
-const createLivros = (req, res) => {
-  let livro = new livros(req.body);
-
-  livro.save((err) => {
-    if(err) {
-      res.status(500).send({message: `${err.message} - falha ao cadastrar livro.`})
-    } else {
-      res.status(201).send(livro.toJSON())
-    }
-  })
-}
-```
-
-- *Método Update*: Vamos refatorar a rota Update, usaremos o comando `find`, dentro do parâmetro colocamos o filtro localizador `id` e  a sintaxe de alteração `$set:` para localizar e alterar o documento. Será construido um bloco if/else para confirmar o status code do processo de no banco de dados MongoDB. 
-
-```js
-const updateLivros = (req, res) => {
-  const id = req.params.id;
-
-  livros.findByIdAndUpdate(id, {$set: req.body}, (err) => {
-    if(!err) {
-      res.status(200).send({message: 'Livro atualizado com sucesso'})
-    } else {
-      res.status(500).send({message: err.message})
-    }
-  })
-}
-```
-
-- *Método Delete*: Vamos refatorar a rota Delete, usaremos o comando `find`, dentro do parâmetro colocamos o filtro localizador `id` e uma palavra reservada `err`, será contruido um bloco if/else para confirmar o status code do processo de exclusão do documento no banco de dados MongoDB. 
-
-```js
-const deleteLivros = (req, res) => {
-  const id = req.params.id;
-
-  livros.findByIdAndDelete(id, (err) => {
-    if(!err){
-      res.status(200).send({message: 'Livro removido com sucesso'})
-    } else {
-      res.status(500).send({message: err.message})
-    }
-  })
-}
-```
-
-Agora que finalizamos, podemos fazer o teste. 
-Crie um novo objeto no postman com o método Post, faça modificações com o Update e requisições de leitura com o Get. Também faça atualização do database no MOngoDB Atlas. O resultado esperado é que haja manipulação de dados da ambas plataformas. 
-
-—-----------------------------------------------------------------
-
-## Atividade para casa
-
-A atividade será em parceria com a API desenvolvida na atividade da aula de revisão semana 11. O objetivo é de seguir o passo a passo de configuração e conexão da API com o MongoDB Atlas, considerando um novo database e collection. 
-
-Passo a passo atividade:
-
-- 1 - Fazer um fork deste repositório.
-- 2 - Clone na sua máquina
-- 3 - Crie  uma branch com seu nome;
-- 4 -  incluir sua API da semana 11 ou outra de sua escolha;
-- 5 - Após as configurações e alterações de conexão, realizar os commits e git push 
-- 6 - Fazer o pull request, compartilhando o link no Classroom. 
-
-
-
+<p align="center">
+<img src="image\levelUp.gif" width="70%" height="70%"/>
+</p>
+<p align="center">
+  <a> 
